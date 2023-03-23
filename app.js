@@ -46,7 +46,9 @@ app.post("/send-email", async (req, res) => {
       .json({ message: "Something went wrong, please try again later" });
   }
 });
-
+app.get("/", (req, res) => {
+  return res.json({ message: "Hello" });
+})
 
 // Start the server
 app.listen(port, () => {
