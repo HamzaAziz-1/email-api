@@ -46,8 +46,8 @@ app.post("/send-email", async (req, res) => {
       .json({ message: "Something went wrong, please try again later" });
   }
 });
-app.get("/", (req, res) => {
-  return res.json({ message: "Hello" });
+app.get("/home", (req, res) => {
+  return res.json("Home");
 })
 
 // Start the server
