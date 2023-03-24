@@ -33,7 +33,7 @@ router.post("/send-email", async (req, res) => {
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
       to: "fa19-bse-001@cuilahore.edu.pk", // Change to your recipient
-      from: '"boom"<hamza.aziz8750@gmail.com>',
+      from: 'Boom <hamza.aziz8750@gmail.com>',
       subject: `New message from ${name}`,
       text: message,
       html: `<p>Email: ${email}</p><p>Name: ${name}</p><p>Message: ${message}</p>`,
