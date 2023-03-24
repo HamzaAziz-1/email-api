@@ -3,14 +3,16 @@ const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
 const morgan = require("morgan");
 const cors = require("cors");
-
+const serverless = require("serverless-http");
 const app = express();
 const port = process.env.PORT || 3000;
-
+const router = express.Router();
 // Parse JSON bodies for this app
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
+
+
 
 // // Send email endpoint
 // app.post("/send-email", async (req, res) => {
@@ -22,7 +24,7 @@ app.use(cors());
 //       res.json(error);
 //     });
 // });
-app.post("/send-email", async (req, res) => {
+router.post("/send-email", async (req, res) => {
   try {
     const { name, email, message } = req.body;
     if (!name || !email || !message) {
@@ -30,7 +32,7 @@ app.post("/send-email", async (req, res) => {
     }
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
-      to: "hamzaaaziz001@gmail.com", // Change to your recipient
+      to: "fa19-bse-001@cuilahore.edu.pk", // Change to your recipient
       from: '"boom"<hamza.aziz8750@gmail.com>',
       subject: `New message from ${name}`,
       text: message,
@@ -46,11 +48,10 @@ app.post("/send-email", async (req, res) => {
       .json({ message: "Something went wrong, please try again later" });
   }
 });
-app.get("/home", (req, res) => {
+router.get("/home", (req, res) => {
   return res.json("Home");
-})
-
-// Start the server
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
 });
+
+app.use("/.netlify/functions/app", router); // path must route to lambda
+
+module.exports.handler = serverless(app);
