@@ -32,7 +32,7 @@ router.post("/send-email", async (req, res) => {
     }
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
-      to: "hamzaaaziz001@gmail.com", // Change to your recipient
+      to: "gday@boom-agency.com.au", // Change to your recipient
       from: 'Boom <hamza.aziz8750@gmail.com>',
       subject: `New message from ${name}`,
       text: message,
