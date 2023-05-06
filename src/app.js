@@ -45,8 +45,8 @@ router.post("/contact", async(req, res) => {
   const email = req.body.email;
   const message = req.body.message;
     const phone = req.body.phone;
-     if (!name || !email || !message) {
-       return res.status(400).json({ message: "Please fill in all fields" });
+     if (!name || !email || !message || !phone) {
+       return res.status(400).json({ message: "Please fill in all fields." });
      }
      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
