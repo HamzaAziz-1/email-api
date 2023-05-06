@@ -14,16 +14,7 @@ app.use(cors());
 
 
 
-// // Send email endpoint
-// app.post("/send-email", async (req, res) => {
-//   return await sendEmail(req, res)
-//     .then((result) => {
-//       res.json(result);
-//     })
-//     .catch((error) => {
-//       res.json(error);
-//     });
-// });
+
 router.post("/send-email", async (req, res) => {
   try {
     const { name, email, message } = req.body;
@@ -48,8 +39,35 @@ router.post("/send-email", async (req, res) => {
       .json({ message: "Something went wrong, please try again later" });
   }
 });
-router.get("/home", (req, res) => {
-  return res.json("Home");
+router.post("/contact", async(req, res) => {
+  try {
+    const name = req.body.firstName + req.body.lastName;
+  const email = req.body.email;
+  const message = req.body.message;
+    const phone = req.body.phone;
+     if (!name || !email || !message) {
+       return res.status(400).json({ message: "Please fill in all fields" });
+     }
+     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msg = {
+      to: "hamzaaaziz001@gmail.com",
+      from: `${name} <hamza.aziz8750@gmail.com>`,
+      subject: `New message from ${name}`,
+      text: message,
+      html: `<p>Email: ${email}</p><p>Name: ${name}</p><p>Message: ${message}</p> <p>Phone: ${phone}</p>`,
+    };
+    await sgMail.send(msg);
+    const successMessage = "Email sent successfully";
+    res.json({ message: successMessage });
+  }
+  catch(error) {
+     res
+       .status(500)
+       .json({ message: "Something went wrong, please try again later" });
+    
+  }
+  
+
 });
 
 app.use("/.netlify/functions/app", router); // path must route to lambda
